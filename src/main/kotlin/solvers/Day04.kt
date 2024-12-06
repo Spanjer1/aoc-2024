@@ -2,15 +2,15 @@ package nl.reinspanjer.solvers
 
 class Day04 : Solver {
     private val findString = "XMAS"
-    private val positions: List<Pair<Int,Int>> = listOf(
-        Pair(-1,-1),
-        Pair(0,-1),
-        Pair(-1,0),
-        Pair(1,0),
-        Pair(0,1),
-        Pair(1,1),
+    private val positions: List<Pair<Int, Int>> = listOf(
+        Pair(-1, -1),
+        Pair(0, -1),
+        Pair(-1, 0),
+        Pair(1, 0),
+        Pair(0, 1),
+        Pair(1, 1),
         Pair(-1, 1),
-        Pair(1,-1)
+        Pair(1, -1)
     )
 
     private fun getCharFromCord(matrix: List<List<Char>>, xCord: Int, yCord: Int): Char {
@@ -20,7 +20,7 @@ class Day04 : Solver {
         return matrix[yCord][xCord]
     }
 
-    private fun getAllSteps(matrix: List<List<Char>>, xCord: Int, yCord: Int, change: Pair<Int,Int>): Boolean {
+    private fun getAllSteps(matrix: List<List<Char>>, xCord: Int, yCord: Int, change: Pair<Int, Int>): Boolean {
         if (getCharFromCord(matrix, xCord, yCord) != 'X') {
             return false
         }
@@ -38,25 +38,24 @@ class Day04 : Solver {
 
 
     private fun lookAroundPartOne(matrix: List<List<Char>>, xCord: Int, yCord: Int): Int {
-        return positions.fold(0) {
-            acc, pair ->
-            acc + if (getAllSteps(matrix, xCord, yCord, pair )) 1 else 0
+        return positions.fold(0) { acc, pair ->
+            acc + if (getAllSteps(matrix, xCord, yCord, pair)) 1 else 0
         }
     }
 
     override fun partOne(input: List<String>): Int {
         val (matrix, cords: List<Pair<Int, Int>>) = getMatrixAndCords(input)
-        return cords.fold(0){ sum, (x,y) -> sum + lookAroundPartOne(matrix, x,y)}
+        return cords.fold(0) { sum, (x, y) -> sum + lookAroundPartOne(matrix, x, y) }
 
     }
 
-    private val mPos: List<Pair<Int,Int>> = listOf(
-        Pair(-1,-1),
+    private val mPos: List<Pair<Int, Int>> = listOf(
+        Pair(-1, -1),
         Pair(1, 1)
     )
 
-    private val sPos: List<Pair<Int,Int>> = listOf(
-        Pair(1,-1),
+    private val sPos: List<Pair<Int, Int>> = listOf(
+        Pair(1, -1),
         Pair(-1, 1)
     )
 
@@ -65,7 +64,7 @@ class Day04 : Solver {
         if (currentChar != 'A') {
             return false
         }
-        return checkChar(matrix, xCord, yCord, mPos ) && checkChar(matrix, xCord, yCord, sPos )
+        return checkChar(matrix, xCord, yCord, mPos) && checkChar(matrix, xCord, yCord, sPos)
 
     }
 
@@ -73,12 +72,11 @@ class Day04 : Solver {
         matrix: List<List<Char>>,
         xCord: Int,
         yCord: Int,
-        pos: List<Pair<Int,Int>>
+        pos: List<Pair<Int, Int>>
     ): Boolean {
-        val chars: List<Char> = pos.map{
-            (x,y) ->
-            val newX = x+xCord
-            val newY = y+yCord
+        val chars: List<Char> = pos.map { (x, y) ->
+            val newX = x + xCord
+            val newY = y + yCord
             getCharFromCord(matrix, newX, newY)
         }
         return chars.size == 2 && chars.contains('M') && chars.contains('S')
@@ -86,8 +84,8 @@ class Day04 : Solver {
 
     override fun partTwo(input: List<String>): Int {
         val (matrix, cords: List<Pair<Int, Int>>) = getMatrixAndCords(input)
-        return cords.map {
-            (x,y) -> lookAroundPart2(matrix,x,y)
+        return cords.map { (x, y) ->
+            lookAroundPart2(matrix, x, y)
         }.count { it }
     }
 

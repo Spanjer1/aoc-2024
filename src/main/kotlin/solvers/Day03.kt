@@ -2,7 +2,7 @@ package nl.reinspanjer.solvers
 
 class StateMachine(part: Int) {
     private var currentState: Int = 0
-    val validMultiplications = mutableListOf<Pair<Int,Int>>()
+    val validMultiplications = mutableListOf<Pair<Int, Int>>()
     private val numberList = mutableListOf<Int>()
     private var currentNumberString = ""
     private var standardPartTwo = mapOf('m' to 1, 'd' to 5)
@@ -10,7 +10,7 @@ class StateMachine(part: Int) {
     private var enabled = true
 
     private var stateMapPart2 = mutableMapOf<Int, (Char) -> Unit>(
-        0 to curryState(0, standardPartTwo) ,
+        0 to curryState(0, standardPartTwo),
         1 to curryState(0, standardPartTwo + mapOf('u' to 2)),
         2 to curryState(0, standardPartTwo + mapOf('l' to 3)),
         3 to curryState(0, standardPartTwo + mapOf('(' to 4)),
@@ -18,20 +18,20 @@ class StateMachine(part: Int) {
         5 to curryState(0, standardPartTwo + mapOf('o' to 6)),
         6 to curryState(0, standardPartTwo + mapOf('(' to 7, 'n' to 9)),
         7 to curryState(0, standardPartTwo + mapOf(')' to 8)),
-        8 to {c ->
+        8 to { c ->
             enabled = true
             curryState(0, standardPartTwo)(c)
         },
         9 to curryState(0, standardPartTwo + mapOf('\'' to 10)),
         10 to curryState(0, standardPartTwo + mapOf('t' to 11)),
-        11 to {c ->
+        11 to { c ->
             enabled = false
             curryState(0, standardPartTwo)(c)
         },
     )
 
     private var stateMapPart1 = mutableMapOf<Int, (Char) -> Unit>(
-        0 to curryState(0, standardPartOne) ,
+        0 to curryState(0, standardPartOne),
         1 to curryState(0, standardPartOne + mapOf('u' to 2)),
         2 to curryState(0, standardPartOne + mapOf('l' to 3)),
         3 to curryState(0, standardPartOne + mapOf('(' to 4)),
@@ -57,7 +57,7 @@ class StateMachine(part: Int) {
     fun numberState(char: Char) {
         if (char.isDigit()) {
             currentNumberString += char
-        } else if (char == ',' ) {
+        } else if (char == ',') {
             numberList.add(currentNumberString.toInt())
             currentNumberString = ""
         } else if (char == ')') {
@@ -77,10 +77,11 @@ class StateMachine(part: Int) {
     }
 
     fun curryState(default: Int, m: Map<Char, Int>): (Char) -> (Unit) = { char: Char ->
-            currentState = m.getOrDefault(char, default)
+        currentState = m.getOrDefault(char, default)
     }
 
 }
+
 class Day03 : Solver {
 
     override fun partOne(input: List<String>): Int {
@@ -93,7 +94,7 @@ class Day03 : Solver {
         println(sm.validMultiplications)
         println(sm.validMultiplications.size)
 
-        return sm.validMultiplications.fold(0) { acc, (a,b) ->
+        return sm.validMultiplications.fold(0) { acc, (a, b) ->
             val add = a * b
             println("$acc, $a $b = $add")
             acc + add
@@ -111,7 +112,7 @@ class Day03 : Solver {
         println(sm.validMultiplications)
         println(sm.validMultiplications.size)
 
-        return sm.validMultiplications.fold(0) { acc, (a,b) ->
+        return sm.validMultiplications.fold(0) { acc, (a, b) ->
             val add = a * b
             println("$acc, $a $b = $add")
             acc + add

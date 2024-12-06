@@ -7,7 +7,7 @@ class Day05 : Solver {
         var total = 0
         updateList.forEach { updateLine ->
             if (checkIfRuleCorrect(updateLine, orderMap)) {
-                val middle = updateLine.size/2
+                val middle = updateLine.size / 2
                 total += updateLine[middle]
             }
         }
@@ -45,15 +45,15 @@ class Day05 : Solver {
 
     private fun checkIfRuleCorrect(updateLine: List<Int>, rules: Map<Int, Rule>): Boolean {
         var ret = true
-        run breaking@ {
+        run breaking@{
             updateLine.forEachIndexed { index, n ->
                 val rule = rules.getOrDefault(n, Rule())
                 val left = updateLine.subList(0, index)
                 val right = updateLine.subList(index + 1, updateLine.size)
                 val before = rule.before
                 val after = rule.after
-                val leftCheck = left.all{ before.contains(it) || !after.contains(it)}
-                val rightCheck = right.all {after.contains(it) ||  !before.contains(it)}
+                val leftCheck = left.all { before.contains(it) || !after.contains(it) }
+                val rightCheck = right.all { after.contains(it) || !before.contains(it) }
                 if (!(leftCheck && rightCheck)) {
                     ret = false
                     return@breaking
@@ -66,14 +66,14 @@ class Day05 : Solver {
     private fun fixWrongList(updateLine: List<Int>, rules: Map<Int, Rule>): List<Int> {
         val fixedNumbers: MutableList<Int> = updateLine.toMutableList()
 
-        while (!checkIfRuleCorrect(fixedNumbers, rules) ) {
+        while (!checkIfRuleCorrect(fixedNumbers, rules)) {
             for ((index, n) in fixedNumbers.withIndex()) {
                 val rule = rules.getOrDefault(n, Rule())
                 val right = fixedNumbers.subList(index + 1, fixedNumbers.size)
                 val after = rule.after
                 val rightCheck = right.filter { !after.contains(it) }
 
-                 if (rightCheck.isNotEmpty()) {
+                if (rightCheck.isNotEmpty()) {
                     val violated = rightCheck[0]
                     fixedNumbers[fixedNumbers.indexOf(violated)] = n
                     fixedNumbers[index] = violated
@@ -93,7 +93,7 @@ class Day05 : Solver {
         updateList.forEach { updateLine ->
             if (!checkIfRuleCorrect(updateLine, orderMap)) {
                 val fixed = fixWrongList(updateLine, orderMap)
-                total += fixed[fixed.size/2]
+                total += fixed[fixed.size / 2]
             }
         }
         return total;
