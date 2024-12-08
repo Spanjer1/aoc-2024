@@ -24,7 +24,6 @@ fun main(args: Array<String>) {
         } else {
             solver.partTwo(resource)
         }
-
         println("Answer part ${part}: $answer")
 
     } catch (e: NumberFormatException) {
