@@ -8,7 +8,7 @@ fun getResource(path: String): List<String> {
 }
 
 fun getSolver(number: Int): Solver {
-    val numberText = if (number < 9) {
+    val numberText = if (number <= 9) {
         "0$number"
     } else {
         "$number"
