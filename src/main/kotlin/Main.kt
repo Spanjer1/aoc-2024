@@ -27,7 +27,7 @@ fun main(args: Array<String>) {
         println("Answer part ${part}: $answer")
 
     } catch (e: NumberFormatException) {
-        print(e)
+        e.printStackTrace()
         println("Error: First two arguments must be valid numbers")
         println("Usage: program <number1> <number2> <string>")
     }
