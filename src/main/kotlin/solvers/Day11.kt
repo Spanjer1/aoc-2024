@@ -11,19 +11,23 @@ class Day11 : Solver {
         return execute(input, times)
     }
 
+    override fun partTwo(input: List<String>): Number {
+        val times = 75
+        return execute(input, times)
+    }
+
     private fun createTwoHalves(b: Stone): List<Stone> {
-        var nString = b.value.toString()
-        var i = nString.length/2
-        var x = nString.substring(0,i).toBigInteger()
-        var y = nString.substring(i,nString.length).toBigInteger()
+        val nString = b.value.toString()
+        val i = nString.length/2
+        val x = nString.substring(0,i).toBigInteger()
+        val y = nString.substring(i,nString.length).toBigInteger()
         return listOf(
             Stone(x, b.timesLeft-1),
             Stone(y, b.timesLeft-1)
         )
     }
 
-
-    fun blinks(stone: Stone): List<Stone> {
+    private fun rules(stone: Stone): List<Stone> {
         if (stone.value == BigInteger.ZERO) {
             return listOf(Stone(BigInteger.ONE, stone.timesLeft-1))
         } else if (stone.value.toString().length % 2 == 0) {
@@ -33,30 +37,30 @@ class Day11 : Solver {
         }
     }
 
-    fun blink(stone: Stone): BigInteger {
+    private fun blink(stone: Stone): BigInteger {
         val stack = Stack<StoneNode>()
         val root = StoneNode(stone, null, null, BigInteger.ONE )
         stack.push(root)
         var total = BigInteger.ZERO
         while (stack.isNotEmpty()) {
             val node: StoneNode = stack.removeLast()
-            val current: Stone = node.stone
-            if (current.timesLeft == 0) {
+            val nodeStone: Stone = node.stone
+            if (nodeStone.timesLeft == 0) {
                 node.finished = true
                 node.size = BigInteger.ONE
                 node.children = null
                 addToCache(node)
                 total += node.size
             }
-            else if (cache.containsKey(current)) {
-                node.size = cache[current]!!
+            else if (cache.containsKey(nodeStone)) {
+                node.size = cache[nodeStone]!!
                 node.finished = true
                 node.children = null
                 addToCache(node)
                 total += node.size
             }
             else {
-                val stones: List<StoneNode> = blinks(current).map{ StoneNode(it, node, null, BigInteger.ONE)}
+                val stones: List<StoneNode> = rules(nodeStone).map{ StoneNode(it, node, null, BigInteger.ONE)}
                 node.children = stones
                 node.size = stones.size.toBigInteger()
                 stones.forEach {
@@ -83,11 +87,6 @@ class Day11 : Solver {
             return true
         }
         return stone.children!!.all { it.finished }
-    }
-
-    override fun partTwo(input: List<String>): Number {
-        val times = 75
-        return execute(input, times)
     }
 
     private fun execute(input: List<String>, times: Int): BigInteger {
